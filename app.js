@@ -1,7 +1,7 @@
 const loanForm = document.querySelector('#loan-form')
 
 
-const calculateResults = (e) =>{ 
+const calculateResults = () =>{ 
 
     const amount = document.querySelector('#amount')
     const interest = document.querySelector('#interest')
@@ -21,11 +21,16 @@ const calculateResults = (e) =>{
         monthlyPayment.value = monthly.toFixed(2)
         totalPayment.value = (monthly * calculatedPayments).toFixed(2)
         totalInterest.value = ((monthly*calculatedPayments)-principal).toFixed(2)
+        document.querySelector('#results').style.display = 'block'
+        document.querySelector('#loading').style.display = 'none'
+
+
     } else {
+        document.querySelector('#loading').style.display = 'none'
+        document.querySelector('#results').style.display = 'none'
         showError('Invalid Submission')
     }
 
-    e.preventDefault()
    
 }
 
@@ -45,4 +50,10 @@ const showError = (error) => {
 
 const clearError = () => document.querySelector('.alert').remove()
 
-loanForm.addEventListener('submit', calculateResults)
+loanForm.addEventListener('submit', (e)=>{
+    document.querySelector('#results').style.display = 'none'
+    document.querySelector('#loading').style.display = 'block'
+
+    setTimeout(calculateResults, 250)
+    e.preventDefault()
+})
